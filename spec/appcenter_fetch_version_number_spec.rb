@@ -132,27 +132,9 @@ describe Fastlane::Actions::AppcenterFetchVersionNumberAction do
 
         it 'returns the correct version number' do
           expect(version["id"]).to eq(7)
-          expect(version["version"]).to eq("1.0.4")
-          expect(version["build_number"]).to eq("1.0.4.105")
-        end
-      end
-
-      context "with provided version number and a valid token, owner name, and app name" do
-        let(:version) do
-          version = Fastlane::FastFile.new.parse("lane :test do
-            appcenter_fetch_version_number(
-              api_token: '1234',
-              owner_name: 'owner-name',
-              app_name: 'App-Name',
-              version: '1.0.1'
-            )
-          end").runner.execute(:test)
-        end
-
-        it "returns the correct version and build numbers" do
-          expect(version["id"]).to eq(5)
-          expect(version["version"]).to eq("1.0.1")
-          expect(version["build_number"]).to eq("1.0.1.102")
+          expect(version["version"]).to eq('1.0.4')
+          expect(version["build_number"]).to eq('1.0.4.105')
+          expect(version["release_notes"]).to eq('note 7')
         end
       end
     end
