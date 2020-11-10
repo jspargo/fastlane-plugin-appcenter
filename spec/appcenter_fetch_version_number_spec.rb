@@ -131,7 +131,6 @@ describe Fastlane::Actions::AppcenterFetchVersionNumberAction do
         end
 
         it 'returns the correct version number' do
-          puts version
           expect(version["id"]).to eq(7)
           expect(version["version"]).to eq("1.0.4")
           expect(version["build_number"]).to eq("1.0.4.105")
@@ -151,7 +150,6 @@ describe Fastlane::Actions::AppcenterFetchVersionNumberAction do
         end
 
         it "returns the correct version and build numbers" do
-          puts version
           expect(version["id"]).to eq(5)
           expect(version["version"]).to eq("1.0.1")
           expect(version["build_number"]).to eq("1.0.1.102")
