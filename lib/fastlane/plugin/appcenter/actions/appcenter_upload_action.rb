@@ -36,6 +36,7 @@ module Fastlane
     module SharedValues
       APPCENTER_DOWNLOAD_LINK = :APPCENTER_DOWNLOAD_LINK
       APPCENTER_BUILD_INFORMATION = :APPCENTER_BUILD_INFORMATION
+      APPCENTER_RELEASE_URL = :APPCENTER_RELEASE_URL
     end
 
     class AppcenterUploadAction < Action
@@ -229,6 +230,7 @@ module Fastlane
           if release_id.is_a? Integer
             release_url = Helper::AppcenterHelper.get_release_url(owner_type, owner_name, app_name, release_id)
             UI.message("Release '#{release_id}' committed: #{release_url}")
+            Actions.lane_context[Fastlane::Actions::SharedValues::APPCENTER_RELEASE_URL] = release_url
 
             release = Helper::AppcenterHelper.update_release(api_token, owner_name, app_name, release_id, release_notes)
             Helper::AppcenterHelper.update_release_metadata(api_token, owner_name, app_name, release_id, dsa_signature, ed_signature)
@@ -662,7 +664,8 @@ module Fastlane
       def self.output
         [
           ['APPCENTER_DOWNLOAD_LINK', 'The newly generated download link for this build'],
-          ['APPCENTER_BUILD_INFORMATION', 'contains all keys/values from the App Center API']
+          ['APPCENTER_BUILD_INFORMATION', 'contains all keys/values from the App Center API'],
+          ['APPCENTER_RELEASE_URL', 'the release page for a given release']
         ]
       end
 
