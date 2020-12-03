@@ -19,6 +19,7 @@ module Fastlane
         api_token = params[:api_token]
         app_name = params[:app_name]
         owner_name = params[:owner_name]
+        owner_type = params[:owner_type]
         version = params[:version]
 
         latest_release = Helper::AppcenterHelper.fetch_latest_release(
@@ -33,7 +34,8 @@ module Fastlane
           "id" => latest_release['id'],
           "version" => latest_release['short_version'],
           "build_number" => latest_release['version'],
-          "release_notes" => latest_release['release_notes']
+          "release_notes" => latest_release['release_notes'],
+          "release_url" => Helper::AppcenterHelper.get_release_url(owner_type, owner_name, app_name, latest_release['id'])
         }
       end
 
@@ -50,6 +52,16 @@ module Fastlane
                                        description: "Name of the owner of the application on App Center",
                                        verify_block: proc do |value|
                                          UI.user_error!("No owner name for App Center given, pass using `owner_name: 'owner name'`") unless value && !value.empty?
+                                       end),
+          FastlaneCore::ConfigItem.new(key: :owner_type,
+                                       env_name: "APPCENTER_OWNER_TYPE",
+                                       description: "Owner type, either 'user' or 'organization'",
+                                       optional: true,
+                                       default_value: "user",
+                                       type: String,
+                                       verify_block: proc do |value|
+                                         accepted_formats = ["user", "organization"]
+                                         UI.user_error!("Only \"user\" and \"organization\" types are allowed, you provided \"#{value}\"") unless accepted_formats.include? value
                                        end),
           FastlaneCore::ConfigItem.new(key: :app_name,
                                        env_name: "APPCENTER_APP_NAME",
